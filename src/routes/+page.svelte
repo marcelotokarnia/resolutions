@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import Counter from './Counter.svelte'
 	import WeekBlocks from '$lib/components/WeekBlocks.svelte'
 	import welcome from '$lib/images/svelte-welcome.webp'
 	import welcome_fallback from '$lib/images/svelte-welcome.png'
+	export let data: { weeks: Array<string> }
 </script>
 
 <svelte:head>
@@ -27,7 +28,7 @@
 	</h2>
 
 	<Counter />
-	<WeekBlocks />
+	<WeekBlocks weeks={data.weeks} />
 </section>
 
 <style>

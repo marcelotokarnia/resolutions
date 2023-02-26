@@ -2,18 +2,12 @@
 	const WEEK_IN_MILI = 1000 * 60 * 60 * 24 * 7
 	const x = Array(12)
 		.fill('')
-		.map(() => [] as Array<number>)
+		.map(() => [] as Array<string>)
 	const y = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 	let dt = new Date(2023, 0, 2)
-	let weekNumber = 0
-	while (dt.getFullYear() === 2023) {
-		x[dt.getMonth()].push(weekNumber)
-		dt = new Date(dt.getTime() + WEEK_IN_MILI)
-		weekNumber++
-	}
 </script>
 
-<script>
+<script lang="ts">
 	const gapX = 2
 	const gapY = 5
 	const size = 12
@@ -22,6 +16,13 @@
 
 	const spacingX = size + 2 * gapX
 	const spacingY = size + 2 * gapY
+	export let weeks: Array<string>
+	let weekNumber = 0
+	while (dt.getFullYear() === 2023) {
+		x[dt.getMonth()].push(weeks[weekNumber])
+		dt = new Date(dt.getTime() + WEEK_IN_MILI)
+		weekNumber++
+	}
 </script>
 
 <svg
@@ -32,7 +33,7 @@
 	<g transform="translate({textSpacing}, 0)">
 		{#each y as month, monthIdx}
 			<g transform="translate(0, {monthIdx * spacingY})">
-				{#each x[monthIdx] as weeks, weekIdx}
+				{#each x[monthIdx] as weekColor, weekIdx}
 					<rect
 						width={size}
 						height={size}
@@ -42,7 +43,7 @@
 						data-date="2022-01-01"
 						data-level="0"
 						rx="2"
-						fill="green"
+						fill={weekColor}
 						ry="2">xxx</rect
 					>
 				{/each}
