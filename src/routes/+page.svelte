@@ -3,7 +3,24 @@
 	import WeekBlocks from '$lib/components/WeekBlocks.svelte'
 	import welcome from '$lib/images/svelte-welcome.webp'
 	import welcome_fallback from '$lib/images/svelte-welcome.png'
-	export let data: { weeks: Array<string> }
+	const WEEK_IN_MILI = 1000 * 60 * 60 * 24 * 7
+	const whichWeek = (dt: Date): number =>
+		Math.ceil((dt.getTime() - new Date(2023, 0, 2).getTime()) / WEEK_IN_MILI)
+
+	export let data: { weeks: Array<number> }
+	const thisWeek = whichWeek(new Date())
+
+	const weeks: Array<{ color: string; title: string }> = data.weeks.map((e, i) => {
+		let color = 'red'
+		if (i > thisWeek) {
+			color = 'gray'
+		} else if (e >= 65) {
+			color = 'green'
+		} else if (e >= 35) {
+			color = 'yellow'
+		}
+		return { color, title: `week ${i + 1}: ${e}km` }
+	})
 </script>
 
 <svelte:head>
@@ -28,7 +45,7 @@
 	</h2>
 
 	<Counter />
-	<WeekBlocks weeks={data.weeks} />
+	<WeekBlocks {weeks} />
 </section>
 
 <style>

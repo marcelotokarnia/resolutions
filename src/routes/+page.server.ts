@@ -19,29 +19,15 @@ const whichWeek = (dt: Date): number =>
 const getDt = (act: SummaryActivity): Date =>
 	new Date(`${act.start_date_local.slice(0, -1)}${act.timezone.slice(4, 10)}`)
 
-const parseActivities = (activities: Array<SummaryActivity>): Array<string> => {
-	const totalKms = Array(53).fill(0)
+const parseActivities = (activities: Array<SummaryActivity>): Array<number> => {
+	const totalKms: Array<number> = Array(53).fill(0)
 	const runActivities = activities.filter(e => e.type === 'Run')
 	for (const run of runActivities) {
 		const dt = getDt(run)
 		const week = whichWeek(dt)
 		totalKms[week] += run.distance / 1000
 	}
-	const thisWeek = whichWeek(new Date())
-	return totalKms
-		.map((e, i) => {
-			if (i > thisWeek) {
-				return 'gray'
-			}
-			if (e >= 65) {
-				return 'green'
-			}
-			if (e >= 35) {
-				return 'yellow'
-			}
-			return 'red'
-		})
-		.slice(1)
+	return totalKms.slice(1).map(e => parseFloat(e.toFixed(2)))
 }
 
 /** @type {import('./$types').PageData} */

@@ -2,7 +2,7 @@
 	const WEEK_IN_MILI = 1000 * 60 * 60 * 24 * 7
 	const x = Array(12)
 		.fill('')
-		.map(() => [] as Array<string>)
+		.map(() => [] as Array<{ color: string; title: string }>)
 	const y = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 	let dt = new Date(2023, 0, 2)
 </script>
@@ -16,7 +16,7 @@
 
 	const spacingX = size + 2 * gapX
 	const spacingY = size + 2 * gapY
-	export let weeks: Array<string>
+	export let weeks: Array<{ color: string; title: string }>
 	let weekNumber = 0
 	while (dt.getFullYear() === 2023) {
 		x[dt.getMonth()].push(weeks[weekNumber])
@@ -33,7 +33,7 @@
 	<g transform="translate({textSpacing}, 0)">
 		{#each y as month, monthIdx}
 			<g transform="translate(0, {monthIdx * spacingY})">
-				{#each x[monthIdx] as weekColor, weekIdx}
+				{#each x[monthIdx] as week, weekIdx}
 					<rect
 						width={size}
 						height={size}
@@ -43,8 +43,8 @@
 						data-date="2022-01-01"
 						data-level="0"
 						rx="2"
-						fill={weekColor}
-						ry="2">xxx</rect
+						fill={week.color}
+						ry="2"><title>{week.title}</title></rect
 					>
 				{/each}
 			</g>
